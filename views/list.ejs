@@ -4,9 +4,23 @@
     <head>
         <title>Title Here</title>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="/css/styles.css">
     </head>
 
     <body>
-        <h1>Today is a <%= kindOfDay %>!</h1>
+        <h1>Today is <%= kindOfDay %>!</h1>
+
+        <form method="post" action="/">
+            <label for="listing">To-do List</label>
+            <input id="item" type="text" name="newItem">
+            <button type="submit">Add Item</button>
+        </form>
+
+        <ul>
+           
+           <% for (i=0; i<newListItems.length; i++) { %>
+               <li><%= newListItems[i]%></li>
+          <%  } %>
+        </ul>
     </body>
 </html>
