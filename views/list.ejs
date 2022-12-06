@@ -4,23 +4,27 @@
     <head>
         <title>Title Here</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="/css/styles.css">
+        <link rel="stylesheet" href="css/styles.css">
     </head>
 
     <body>
-        <h1>Today is <%= kindOfDay %>!</h1>
 
-        <form method="post" action="/">
-            <label for="listing">To-do List</label>
-            <input id="item" type="text" name="newItem">
-            <button type="submit">Add Item</button>
-        </form>
-
-        <ul>
-           
-           <% for (i=0; i<newListItems.length; i++) { %>
-               <li><%= newListItems[i]%></li>
-          <%  } %>
-        </ul>
+        <div class="box" id="heading">
+            <h1>Today is <%= kindOfDay %>!</h1>
+        </div>
+        
+            <div class="box">
+                <form method="post" action="/" class="item">
+                    <label for="listing">To-do List</label>
+                    <input id="item" type="text" name="newItem" placeholder="Add Item" autocomplete="off">
+                    <button type="submit">+</button>
+                </form>
+            <div class="box">
+                <% for (i=0; i<newListItems.length; i++) { %>
+                <div class="item">
+                    <p><%= newListItems[i]%></p>
+                </div>
+                <%  } %>
+            </div>
     </body>
 </html>
