@@ -17,14 +17,8 @@ const port = 3000;
 let items = [];
 let workItems = []
 
-let dateOptions = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  let today = new Date();
-  let day = today.toLocaleDateString("en-US", dateOptions);
+const date = require(__dirname + "/date.js")
+let day = date()
 
 app.get("/", function (req, res) {
   // console.log(day)
