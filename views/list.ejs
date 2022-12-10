@@ -11,17 +11,19 @@
 
         <div class="box" id="heading">
             <h1>Today is <%= kindOfDay %>!</h1>
+            <h2><%= typeList %> </h2>
         </div>
         
             <div class="box">
                 <form method="post" action="/" class="item">
                     <label for="listing">To-do List</label>
-                    <input id="item" type="text" name="newItem" placeholder="Add Item" autocomplete="off">
-                    <button type="submit">+</button>
+                    <input id="item" type="text" name="newItem" placeholder="New Item" autocomplete="off">
+                    <button type="submit" name="list" value="<%= typeList %>">+</button>
                 </form>
             <div class="box">
                 <% for (i=0; i<newListItems.length; i++) { %>
                 <div class="item">
+                    <input type="checkbox">
                     <p><%= newListItems[i]%></p>
                 </div>
                 <%  } %>

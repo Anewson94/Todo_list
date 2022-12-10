@@ -15,9 +15,9 @@ app.set("view engine", "ejs");
 const port = 3000;
 
 let items = [];
+let workItems = []
 
-app.get("/", function (req, res) {
-  let dateOptions = {
+let dateOptions = {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -25,19 +25,42 @@ app.get("/", function (req, res) {
   };
   let today = new Date();
   let day = today.toLocaleDateString("en-US", dateOptions);
+
+app.get("/", function (req, res) {
   // console.log(day)
   let item = req.body.newItem;
   res.render("list", {
     kindOfDay: day,
+    typeList: day,
     newListItems: items,
   });
 });
 
+
 app.post("/", function (req, res) {
-  let item = req.body.newItem;
-  items.push(item);
-  res.redirect("/");
+    let item = req.body.newItem;
+    console.log(req.body)
+    if (req.body.list == "Work List") {
+        workItems.push(item)
+        res.redirect("/work")
+    } else {
+        items.push(item);
+        res.redirect("/");
+     }
+
+  
 });
+
+app.post("/work", function(req, res) {
+    let item = req.body.newItem
+    workItems.push(item)
+    res.redirect("/work")
+    
+})
+
+app.get("/work", function(req,res) {
+    res.render("list", {kindOfDay: day, typeList: "Work List", newListItems: workItems})
+})
 
 app.listen(port, function () {
   console.log("Listening on port " + port);
