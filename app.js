@@ -62,6 +62,10 @@ app.get("/work", function(req,res) {
     res.render("list", {kindOfDay: day, typeList: "Work List", newListItems: workItems})
 })
 
+app.get("/about", function(req, res) {
+    res.render("about")
+})
+
 app.listen(port, function () {
   console.log("Listening on port " + port);
 });
