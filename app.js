@@ -92,6 +92,17 @@ app.post("/", function (req, res) {
     res.redirect("/") ; 
 });
 
+app.post("/delete", function(req, res) {
+  let deleteBox = req.body.deleteBox
+  let deleteBoxID = req.body.deleteBox;
+  Item.findByIdAndRemove(deleteBoxID.trim(), function(err){
+    if (err) {
+      console.log(err)
+    } else {console.log("Item Deleted"), res.redirect("/");}
+  })
+  
+})
+
 app.post("/work", function(req, res) {
     let item = req.body.newItem
     
