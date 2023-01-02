@@ -57,14 +57,26 @@ let day = date();
 let typeList = "List"
 
 app.get("/", function (req, res) {
+
   Item.find({}, function(err, foundItems) {
+    if (foundItems === 0) {
+      Item.insertMany(defaultItems, function(err) {
+        if (err) {
+        console.log(err);
+        } else console.log("Succesfully added Items")
+      });
+      res.redirect("/")
+    } else {
+      res.render("list", {
+        kindOfDay: day,
+        typeList: typeList,
+        newListItems: foundItems,
+      });
+    };
     
-    res.render("list", {
-      kindOfDay: day,
-      typeList: typeList,
-      newListItems: foundItems,
-    });
   })
+
+  
   // console.log(day)
   let item = req.body.newItem;
   
@@ -72,18 +84,20 @@ app.get("/", function (req, res) {
 
 
 app.post("/", function (req, res) {
-    let item = req.body.newItem;
-    console.log(req.body)
-    
-      
+    let postNewItem = req.body.newItem;
+    const item = new Item({
+      name: postNewItem
+    }); 
+    item.save();
+    res.redirect("/") ; 
 });
 
 app.post("/work", function(req, res) {
     let item = req.body.newItem
     
-    res.redirect("/work")
+    res.redirect("/work");
     
-})
+});
 
 app.get("/work", function(req,res) {
     res.render("list", {kindOfDay: day, typeList: "Work List", newListItems: workItems})

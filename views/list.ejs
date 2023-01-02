@@ -14,12 +14,13 @@
                     <button type="submit" name="list" value="<%= typeList %>">+</button>
                 </form>
             <div class="box">
-                <% for (i=0; i<newListItems.length; i++) { %>
-                <div class="item">
+               
+                <% newListItems.forEach(element => { %>
+                    <div class="item">
                     <input type="checkbox">
-                    <p><%= newListItems[i]%></p>
+                    <p><%= element.name %></p>
                 </div>
-                <%  } %>
-            </div>
+                <% }); %> 
+                
     
 <%- include("footer"); -%> 
