@@ -12,6 +12,9 @@ app.use(express.static(__dirname +"/public"));
 const ejs = require("ejs");
 app.set("view engine", "ejs");
 
+// lodash
+let _ = require("lodash")
+
 // Mongoose database
 const mongoose = require("mongoose")
 mongoose.set('strictQuery', false);
@@ -39,13 +42,12 @@ const Item = mongoose.model("Item",todolistSchema )
 
 const defaultItems = [item1, item2, item3]
 
-// Item.insertMany(defaultItems, function(err) {
-//   if (err) {
-//     console.log(err);
-//   } else console.log("Succesfully added Items")
-// });
+const listSchema = new mongoose.Schema({
+  name: String,
+  items: [todolistSchema]
+})
 
-
+const List = mongoose.model("List", listSchema)
 
 // Mongoose
 
@@ -75,21 +77,40 @@ app.get("/", function (req, res) {
     };
     
   })
-
-  
   // console.log(day)
   let item = req.body.newItem;
-  
 });
 
 
 app.post("/", function (req, res) {
     let postNewItem = req.body.newItem;
+    let postListName = req.body.list.trim()
     const item = new Item({
       name: postNewItem
     }); 
-    item.save();
-    res.redirect("/") ; 
+    if (postListName == "List") {
+      console.log(postListName)
+      item.save();
+      console.log("item has been saved");
+      res.redirect("/") ; 
+    } else {
+      List.find({name: postListName}, function(err, foundList) {
+        
+        if (err) {
+          console.log(err);
+          console.log(foundList)
+        } if (!foundList) {
+          console.log("list not found")
+
+        } else {
+          foundList[0].items.push(item)
+          foundList[0].save()
+          res.redirect("/" + postListName)
+          
+        }
+      })
+    }
+    
 });
 
 app.post("/delete", function(req, res) {
@@ -103,16 +124,32 @@ app.post("/delete", function(req, res) {
   
 })
 
-app.post("/work", function(req, res) {
-    let item = req.body.newItem
-    
-    res.redirect("/work");
-    
-});
+app.get("/:listID", function(req, res) {
+  const listID = req.params.listID
 
-app.get("/work", function(req,res) {
-    res.render("list", {kindOfDay: day, typeList: "Work List", newListItems: workItems})
-});
+  List.findOne({name: listID}, function(err, listName) {
+    console.log(listName)
+      if (!listName) {
+        console.log("doesnt exist")
+        console.log("list saved")
+        const list = new List({
+          name: listID,
+          items: defaultItems
+        })
+        list.save()
+        res.redirect("/" + listID)
+        
+      } else { 
+        console.log("exists")
+        res.render("list", {
+          kindOfDay: day,
+          typeList: listName.name,
+          newListItems: listName.items,
+        })
+      } 
+  })
+})
+
 
 app.get("/about", function(req, res) {
     res.render("about")

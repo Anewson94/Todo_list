@@ -4,7 +4,7 @@
 
         <div class="box" id="heading">
             <h1>Today is <%= kindOfDay %>!</h1>
-            <h2><%= typeList %> </h2>
+            <h2><%= typeList %></h2>
         </div>
         
             <div class="box">
@@ -18,7 +18,7 @@
                 <% newListItems.forEach(element => { %>
             <form method="post" action="/delete">
                 <div class="item">
-                    <input type="checkbox" name="deleteBox" value="<%= element._id %> " onchange="this.form.submit()">
+                    <input type="checkbox" name="deleteBox" value="<%= element._id %>" onchange="this.form.submit()">
                     <p><%= element.name %></p>
                 </div>
             </form>
